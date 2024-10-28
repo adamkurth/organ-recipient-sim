@@ -2,8 +2,8 @@ rm(list=ls())
 cwd <- getwd()
 
 # Parameters
-d <- 10  # number of donors
-r <- 10  # number of recipients
+d <- 5  # number of donors
+r <- 5  # number of recipients
 k <- 3   # number of features
 
 # Constraints
@@ -44,7 +44,7 @@ generate.health.score <- function(age, is.donor) {
   # Base score ranges
   # donor: [0.6, 1.0], recipient: [0.1, 0.8]
   base.score.min <- if(is.donor) 0.6 else 0.1
-  base.score.max <- if(is.donor) 2.0 else 0.8
+  base.score.max <- if(is.donor) 1.0 else 0.8
   
   # Generate base score
   base.score <- runif(1, base.score.min, base.score.max)
@@ -87,4 +87,5 @@ data.d <- generate.donor.data(d)
 data.r <- generate.recipient.data(r)
 
 # Save data
-save(data.d, data.r, file=paste0(cwd,"data.RData"))
+save.path <- paste0(cwd,"/1_data_initial.RData")
+save(data.d, data.r, file=save.path)

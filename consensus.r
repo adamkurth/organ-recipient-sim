@@ -1,28 +1,6 @@
-rm(list=ls())
-load("data.RData")
+rm(list = ls())
 
-comp.matrix <- matrix(FALSE, nrow = nrow(data.r), ncol = nrow(data.d))
-rownames(comp.matrix) <- data.r$id
-colnames(comp.matrix) <- data.d$id
-
-# initial filtering based on blood compatible type
-is.same.blood.type <- function(donor, recipient){
-    compatible <- list(
-        "O" = c("A", "B", "AB", "O"),
-        "A" = c("A", "AB"),
-        "B" = c("B", "AB"),
-        "AB" = c("AB")
-    )
-    return(recipient %in% compatible[[donor]])
-}
-
-# filter based on blood type
-for (i in 1:nrow(data.r)) {
-    for (j in 1:nrow(data.d)) {
-        comp.matrix[i, j] <- is.same.blood.type(data.d$blood.type[j], data.r$blood.type[i])
-    }
-}
-
+# Function to simulate doctor evaluation
 sim.doctor.eval <- function(donor, recipient){
     # age difference (normalized)
     age.diff <- abs(donor$age - recipient$age) / 80 # max age difference is 80
@@ -41,7 +19,7 @@ sim.doctor.eval <- function(donor, recipient){
         0.05 * time.factor  # Time factor contributes 5%
     )
 
-    # Add some randomness to represent individual doctor's judgment
+    # Add some randomness to represent individual doctor's judgment 
     approval.prob <- pmax(0, pmin(1, approval.prob + rnorm(1, mean = 0, sd = 0.1)))
 
     return(runif(1) < approval.prob)
